@@ -1,0 +1,3643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>2 Selected Frames</title>
+  <style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bricolage%20Grotesque:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus%20Jakarta%20Sans:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700;800;900&display=swap');
+
+:root {
+  --dk-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --dk-ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --dk-focus-ring: 0 0 0 3px rgba(13, 153, 255, 0.28);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background-color: #FFFFFF;
+  font-family: 'Inter', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.dk-canvas-viewport {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  max-width: 100%;
+  min-height: 100vh;
+  overflow-x: clip;
+  background-color: #FFFFFF;
+}
+
+.dk-root-frame {
+  width: 100%;
+  max-width: 100%;
+}
+
+.dk-mobile-menu-btn {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  border: 1px solid rgba(15, 23, 42, 0.14);
+  background: rgba(255, 255, 255, 0.92);
+  color: #0F172A;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/* Sticky Navbar & Scrolled Elevation */
+.dk-sticky-navbar {
+  position: sticky !important;
+  top: 0 !important;
+  width: 100% !important;
+  z-index: 1000 !important;
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  transition: background-color 0.28s var(--dk-ease-out), box-shadow 0.28s var(--dk-ease-out), border-color 0.28s var(--dk-ease-out);
+}
+
+.dk-sticky-navbar.dk-navbar-scrolled {
+  box-shadow: 0 10px 30px -10px rgba(15, 23, 42, 0.14), 0 1px 0 0 rgba(15, 23, 42, 0.06) !important;
+}
+
+.dk-synthesized-navbar {
+  position: sticky !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  z-index: 1000 !important;
+}
+
+/* Micro-Animations & Entrance Keyframes */
+@keyframes dkFadeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes dkRippleExpand {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0.45;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(3.8);
+    opacity: 0;
+  }
+}
+
+.dk-animate-in {
+  animation: dkFadeUp 0.55s var(--dk-ease-out) both;
+  animation-delay: var(--dk-delay, 0ms);
+}
+
+/* Interactive Buttons */
+.dk-interactive-btn {
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer !important;
+  user-select: none;
+  text-decoration: none;
+  outline: none;
+  overflow: hidden;
+  transition:
+    transform 0.22s var(--dk-ease-out),
+    box-shadow 0.22s var(--dk-ease-out),
+    filter 0.22s var(--dk-ease-out),
+    background-color 0.22s var(--dk-ease-out),
+    border-color 0.22s var(--dk-ease-out);
+}
+
+.dk-interactive-btn > * {
+  pointer-events: none;
+}
+
+.dk-interactive-btn:hover {
+  transform: translateY(-2px) scale(1.018);
+  filter: brightness(1.05);
+  box-shadow: 0 10px 24px -6px rgba(15, 23, 42, 0.22), 0 4px 10px -2px rgba(13, 153, 255, 0.16);
+}
+
+.dk-interactive-btn:active {
+  transform: translateY(0px) scale(0.975);
+  filter: brightness(0.97);
+}
+
+.dk-interactive-btn:focus-visible {
+  box-shadow: var(--dk-focus-ring);
+}
+
+.dk-ripple-wave {
+  position: absolute;
+  border-radius: 50%;
+  width: 64px;
+  height: 64px;
+  background: rgba(255, 255, 255, 0.55);
+  pointer-events: none;
+  animation: dkRippleExpand 0.55s var(--dk-ease-out) forwards;
+}
+
+/* Interactive Inputs, Textareas & Selects */
+.dk-interactive-input {
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: text !important;
+  outline: none;
+  transition:
+    border-color 0.2s var(--dk-ease-out),
+    box-shadow 0.2s var(--dk-ease-out),
+    background-color 0.2s var(--dk-ease-out),
+    transform 0.2s var(--dk-ease-out);
+}
+
+.dk-interactive-input::placeholder {
+  color: #6B7280;
+  opacity: 0.85;
+}
+
+.dk-interactive-input:hover {
+  border-color: rgba(13, 153, 255, 0.55) !important;
+}
+
+.dk-interactive-input:focus {
+  border-color: #0D99FF !important;
+  box-shadow: var(--dk-focus-ring) !important;
+}
+
+.dk-input-wrapper {
+  display: flex;
+  align-items: center;
+  cursor: text;
+  transition: border-color 0.2s var(--dk-ease-out), box-shadow 0.2s var(--dk-ease-out);
+}
+
+.dk-input-wrapper:focus-within {
+  border-color: #0D99FF !important;
+  box-shadow: var(--dk-focus-ring) !important;
+}
+
+.dk-input-wrapper input {
+  width: 100%;
+  height: 100%;
+  border: none !important;
+  background: transparent !important;
+  outline: none !important;
+  color: inherit;
+  font: inherit;
+  padding: 0 14px;
+}
+
+/* Interactive Links */
+.dk-interactive-link {
+  cursor: pointer !important;
+  text-decoration: none;
+  transition: color 0.2s var(--dk-ease-out), opacity 0.2s var(--dk-ease-out), transform 0.2s var(--dk-ease-out);
+}
+
+.dk-interactive-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 1.5px;
+  background-color: currentColor;
+  transform: scaleX(0);
+  transform-origin: right center;
+  transition: transform 0.24s var(--dk-ease-out);
+  opacity: 0.75;
+}
+
+.dk-interactive-link:hover {
+  opacity: 0.88;
+  transform: translateY(-1px);
+}
+
+.dk-interactive-link:hover::after {
+  transform: scaleX(1);
+  transform-origin: left center;
+}
+
+/* Interactive Feature / Pricing / Content Cards */
+.dk-interactive-card {
+  transition:
+    transform 0.28s var(--dk-ease-out),
+    box-shadow 0.28s var(--dk-ease-out),
+    border-color 0.28s var(--dk-ease-out);
+}
+
+.dk-interactive-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 38px -12px rgba(15, 23, 42, 0.14), 0 4px 12px -2px rgba(15, 23, 42, 0.06);
+}
+
+/* Interactive Toast Feedback */
+.dk-toast-notification {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 18px;
+  border-radius: 12px;
+  background: rgba(15, 23, 42, 0.94);
+  color: #FFFFFF;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.28), 0 0 0 1px rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(12px);
+  transform: translateY(16px);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.26s var(--dk-ease-out), opacity 0.26s var(--dk-ease-out);
+}
+
+.dk-toast-notification.dk-toast-visible {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* ========================================================================== */
+/* ROOT ARTBOARD: Home (1440x2820px) */
+/* ========================================================================== */
+
+.dk-home-5bv7m6 {
+  --dk-design-width: 1440;
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0px;
+  overflow-x: clip;
+  background-color: #FFFFFF;
+}
+
+
+/* ==================== SECTION: header — Navbar ==================== */
+
+.dk-header-navbar-gz3ted {
+  position: sticky !important;
+  top: 0 !important;
+  left: 0;
+  width: 100%;
+  min-height: 72px;
+  z-index: 1000 !important;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 0px clamp(16px, 4vw, 24px);
+  background-color: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+}
+
+.dk-div-section-bg-1npa6lw {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 999px;
+  border: 1px solid #2E3440;
+}
+
+.dk-nav-container-8blrqo {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1140px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-inline: clamp(16px, 4vw, 40px);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 16px clamp(16px, 4vw, 16px) 16px clamp(16px, 4vw, 16px);
+}
+
+.dk-div-row-1ylepjc {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1140px;
+  height: auto;
+}
+
+.dk-a-brand-aerasolo-1urvz09 {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 320px;
+  height: auto;
+  color: #FFFFFF;
+  font-family: 'Bricolage Grotesque', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-a-nav-link-features-1uwb669 {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 320px;
+  height: auto;
+  color: #FAFAFA;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-a-nav-link-hardware-1o7xfdp {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 320px;
+  height: auto;
+  color: #FAFAFA;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-a-nav-link-journal-1imhwuc {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 320px;
+  height: auto;
+  color: #FAFAFA;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-a-nav-link-login-1g8dcak {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 320px;
+  height: auto;
+  color: #FAFAFA;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-button-join-the-grid-azlkca {
+  position: relative;
+  z-index: 1;
+  width: fit-content;
+  min-width: 160px;
+  max-width: 100%;
+  min-height: 48px;
+  background-color: #FB3768;
+  border-radius: 999px;
+  border: 1.5px solid #1E293B;
+}
+
+
+/* ==================== SECTION: section#hero — Hero ==================== */
+
+.dk-section-hero-hero-yy4xal {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.dk-div-section-bg-1h2ipam {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 36px;
+  border: 1px solid #2E3440;
+}
+
+.dk-div-container-1d6nwic {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1196px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-inline: clamp(16px, 4vw, 40px);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 24px clamp(16px, 4vw, 24px) 24px clamp(16px, 4vw, 24px);
+}
+
+.dk-div-row-1jtw8g8 {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1196px;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.dk-div-col-14aosbo {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 580px;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.dk-img-hero-studio-spotligh-109sx6o {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 580px;
+  aspect-ratio: 580 / 340;
+  height: auto;
+  background-image: url("https://images.pexels.com/photos/36566629/pexels-photo-36566629.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 24px;
+  border: 1px solid transparent;
+}
+
+.dk-img-hero-studio-video-re-37vv7z {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 280px;
+  aspect-ratio: 280 / 188;
+  height: auto;
+  background-image: url("https://images.pexels.com/videos/38781554/pexels-photo-38781554.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=630&w=1200");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 20px;
+  border: 1px solid transparent;
+}
+
+.dk-article-card-1gztmv4 {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 280px;
+  height: auto;
+}
+
+.dk-div-card-surface-fjutyo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 20px;
+  border: 1px solid #2E3440;
+}
+
+.dk-span-badge-syne-sync-89x7os {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 320px;
+  height: auto;
+  color: #FFFFFF;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-h2-active-now-17ekz9 {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 320px;
+  height: auto;
+  color: #FFFFFF;
+  font-family: 'Bricolage Grotesque', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-div-col-tv0bs6 {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 580px;
+  height: auto;
+}
+
+.dk-button-social-evolution-2026-1kgw3zl {
+  position: relative;
+  z-index: 1;
+  width: fit-content;
+  min-width: 160px;
+  max-width: 100%;
+  min-height: 42px;
+  background-color: #2E1621;
+  border-radius: 999px;
+  border: 1.5px solid #1E293B;
+}
+
+.dk-h1-reclaim-your-digital-soc-11gmd0l {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 580px;
+  height: auto;
+  color: #FAFAFA;
+  font-family: 'Bricolage Grotesque', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: clamp(29px, 3.47vw, 50px);
+  font-weight: 800;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-h3-break-the-scroll-with-a-5c4oz {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 580px;
+  height: auto;
+  color: #E2E8F0;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-button-join-the-grid-1so7qv2 {
+  position: relative;
+  z-index: 1;
+  width: fit-content;
+  min-width: 160px;
+  max-width: 100%;
+  min-height: 54px;
+  background-color: #FB3768;
+  border-radius: 14px;
+  border: 1.5px solid #1E293B;
+}
+
+.dk-button-view-manifest-yep9hi {
+  position: relative;
+  z-index: 1;
+  width: fit-content;
+  min-width: 160px;
+  max-width: 100%;
+  min-height: 54px;
+  background-color: #0E0E12;
+  border-radius: 14px;
+  border: 1.5px solid #2E3440;
+}
+
+
+/* ==================== SECTION: section#features — Features ==================== */
+
+.dk-section-features-features-12hr28h {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.dk-div-container-nc9urc {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 24px clamp(16px, 4vw, 24px) 24px clamp(16px, 4vw, 24px);
+}
+
+.dk-div-grid-1t9u2iq {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.dk-article-card-j46t78 {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 410px;
+  height: auto;
+}
+
+.dk-div-card-surface-2u5et7 {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 22px;
+  border: 1px solid #E2E8F0;
+}
+
+.dk-h1-1-2m-1h3jyc3 {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 362px;
+  height: auto;
+  color: #FB3768;
+  font-family: 'Bricolage Grotesque', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: clamp(22px, 2.22vw, 32px);
+  font-weight: 800;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-p-night-walkers-1hcelu6 {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 362px;
+  height: auto;
+  color: #475569;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-article-card-1jtnzgy {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 410px;
+  height: auto;
+}
+
+.dk-div-card-surface-1pw2rbo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 22px;
+  border: 1px solid #E2E8F0;
+}
+
+.dk-h1-20ms-1euoyhm {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 362px;
+  height: auto;
+  color: #FB3768;
+  font-family: 'Bricolage Grotesque', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: clamp(22px, 2.22vw, 32px);
+  font-weight: 800;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-p-latent-sync-1h0k6e6 {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 362px;
+  height: auto;
+  color: #475569;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-article-card-1kaerzn {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 410px;
+  height: auto;
+}
+
+.dk-div-card-surface-ghy2r1 {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 22px;
+  border: 1px solid #FB3768;
+}
+
+.dk-h1-4k-197yfnp {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 362px;
+  height: auto;
+  color: #FFFFFF;
+  font-family: 'Bricolage Grotesque', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: clamp(22px, 2.22vw, 32px);
+  font-weight: 800;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-p-social-fidelity-1jiwdai {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 362px;
+  height: auto;
+  color: #FFFFFF;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-span-badge-engineered-for-flow-1k2iz16 {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 400px;
+  height: auto;
+  color: #FFFFFF;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-h1-the-shibuya-system-3ayhqd {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 780px;
+  height: auto;
+  color: #FAFAFA;
+  font-family: 'Bricolage Grotesque', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: clamp(22px, 2.64vw, 38px);
+  font-weight: 800;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-div-grid-1pztmot {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.dk-article-card-l0jtyw {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 730px;
+  height: auto;
+}
+
+.dk-div-section-bg-66oocj {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 28px;
+  border: 1px solid #1E293B;
+}
+
+.dk-img-bento-1-flagship-pho-vk1o4d {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 690px;
+  aspect-ratio: 690 / 330;
+  height: auto;
+  background-image: url("https://images.pexels.com/photos/19969441/pexels-photo-19969441.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 20px;
+  border: 1px solid transparent;
+}
+
+.dk-span-badge-vision-g6ssv5 {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 320px;
+  height: auto;
+  color: #FFFFFF;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-h3-0ms-lag-fowhg4 {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 320px;
+  height: auto;
+  color: #FAFAFA;
+  font-family: 'Bricolage Grotesque', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1.45;
+  text-align: right;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-h2-prism-lens-255n5n {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 470px;
+  height: auto;
+  color: #FAFAFA;
+  font-family: 'Bricolage Grotesque', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-p-real-time-color-grading-mhy3o1 {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 470px;
+  height: auto;
+  color: #E2E8F0;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-button-view-samples-1xbb3ce {
+  position: relative;
+  z-index: 1;
+  width: fit-content;
+  min-width: 160px;
+  max-width: 100%;
+  min-height: 50px;
+  background-color: #FB3768;
+  border-radius: 14px;
+  border: 1.5px solid #1E293B;
+}
+
+.dk-article-card-18hnnxx {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 522px;
+  height: auto;
+}
+
+.dk-div-card-surface-1wmqblc {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 24px;
+  border: 1px solid #E2E8F0;
+}
+
+.dk-img-bento-2-photo-f3ht1l {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 190px;
+  aspect-ratio: 190 / 232;
+  height: auto;
+  background-image: url("https://images.pexels.com/photos/10289009/pexels-photo-10289009.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 18px;
+  border: 1px solid transparent;
+}
+
+.dk-span-badge-speed-1fkjr03 {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 320px;
+  height: auto;
+  color: #FB3768;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-h3-kinetic-feed-kq66j1 {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 320px;
+  height: auto;
+  color: #0F172A;
+  font-family: 'Bricolage Grotesque', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-p-a-fluid-gravity-based-b-s75tlj {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 320px;
+  height: auto;
+  color: #A1A1AA;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-button-demo-motion-i2q9c {
+  position: relative;
+  z-index: 1;
+  width: fit-content;
+  min-width: 160px;
+  max-width: 100%;
+  min-height: 42px;
+  background-color: #FB3768;
+  border-radius: 12px;
+  border: 1.5px solid #1E293B;
+}
+
+.dk-article-card-adod7t {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 522px;
+  height: auto;
+}
+
+.dk-div-card-surface-yb70ix {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 24px;
+  border: 1px solid #E2E8F0;
+}
+
+.dk-img-bento-3-photo-73qf4i {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 190px;
+  aspect-ratio: 190 / 232;
+  height: auto;
+  background-image: url("https://images.pexels.com/photos/8111454/pexels-photo-8111454.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 18px;
+  border: 1px solid transparent;
+}
+
+.dk-span-badge-depth-15wqdwq {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 320px;
+  height: auto;
+  color: #FB3768;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-h3-spatial-dms-xz0am0 {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 320px;
+  height: auto;
+  color: #0F172A;
+  font-family: 'Bricolage Grotesque', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-p-connect-in-3d-soundscape-1a6r184 {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 320px;
+  height: auto;
+  color: #A1A1AA;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-button-open-audio-lgc99s {
+  position: relative;
+  z-index: 1;
+  width: fit-content;
+  min-width: 160px;
+  max-width: 100%;
+  min-height: 42px;
+  background-color: #FB3768;
+  border-radius: 12px;
+  border: 1.5px solid #1E293B;
+}
+
+
+/* ==================== SECTION: section#showcase — Showcase ==================== */
+
+.dk-section-showcase-showcase-1c3ylzh {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.dk-div-section-bg-16e6vik {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 32px;
+  border: 1px solid #2E3440;
+}
+
+.dk-div-container-1qqgm3w {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1204px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-inline: clamp(16px, 4vw, 40px);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 24px clamp(16px, 4vw, 24px) 24px clamp(16px, 4vw, 24px);
+}
+
+.dk-div-row-cpwn01 {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1204px;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.dk-div-col-1i2bln6 {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 560px;
+  height: auto;
+}
+
+.dk-img-feature-showcase-pex-w3wj03 {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 560px;
+  aspect-ratio: 560 / 428;
+  height: auto;
+  background-image: url("https://images.pexels.com/photos/16029615/pexels-photo-16029615.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 22px;
+  border: 1px solid transparent;
+}
+
+.dk-button-pexels-hd-feature-1452krt {
+  position: relative;
+  z-index: 1;
+  width: fit-content;
+  min-width: 160px;
+  max-width: 100%;
+  min-height: 42px;
+  background-color: #0E0E12;
+  border-radius: 999px;
+  border: 1.5px solid #2E3440;
+}
+
+.dk-div-col-12lsbfk {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 600px;
+  height: auto;
+}
+
+.dk-span-badge-visual-sovereignty-zytprk {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 600px;
+  height: auto;
+  color: #FFFFFF;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-h1-night-mode-by-default-1dajiol {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 600px;
+  height: auto;
+  color: #FAFAFA;
+  font-family: 'Bricolage Grotesque', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: clamp(22px, 2.50vw, 36px);
+  font-weight: 800;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-p-oled-optimization-1w6vbs1 {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 600px;
+  height: auto;
+  color: #E2E8F0;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-p-zero-blue-light-mode-bqnnx9 {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 600px;
+  height: auto;
+  color: #E2E8F0;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-p-retinal-sync-2-0-1o6lg6q {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 600px;
+  height: auto;
+  color: #E2E8F0;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-button-explore-interface-1pl8sbq {
+  position: relative;
+  z-index: 1;
+  width: fit-content;
+  min-width: 160px;
+  max-width: 100%;
+  min-height: 52px;
+  background-color: #FB3768;
+  border-radius: 12px;
+  border: 1.5px solid #1E293B;
+}
+
+
+/* ==================== SECTION: section#cta — Call to Action ==================== */
+
+.dk-section-cta-call-to-action-5cdqv7 {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.dk-div-section-bg-16aa18f {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 28px;
+  border: 1px solid #FB3768;
+}
+
+.dk-div-container-npeb2z {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1168px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-inline: clamp(16px, 4vw, 40px);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 24px clamp(16px, 4vw, 24px) 24px clamp(16px, 4vw, 24px);
+}
+
+.dk-div-row-3ten47 {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1168px;
+  height: auto;
+}
+
+.dk-h1-ready-for-the-night-1iyspzq {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 720px;
+  height: auto;
+  color: #FAFAFA;
+  font-family: 'Bricolage Grotesque', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: clamp(22px, 2.36vw, 34px);
+  font-weight: 800;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-button-secure-access-1u9zu9n {
+  position: relative;
+  z-index: 1;
+  width: fit-content;
+  min-width: 160px;
+  max-width: 100%;
+  min-height: 56px;
+  background-color: #FB3768;
+  border-radius: 14px;
+  border: 1.5px solid #1E293B;
+}
+
+.dk-p-secure-your-2026-alpha-i-os6gem {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 720px;
+  height: auto;
+  color: #E2E8F0;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+
+/* ==================== SECTION: footer — Site Footer ==================== */
+
+.dk-footer-site-footer-qv9dku {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.dk-div-section-bg-fa3kyy {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  border: 1px solid #E2E8F0;
+}
+
+.dk-div-container-1bpvp8n {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 24px clamp(16px, 4vw, 24px) 24px clamp(16px, 4vw, 24px);
+}
+
+.dk-div-row-11a8yje {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 100%;
+}
+
+.dk-h3-aerasolo-nfnch8 {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 360px;
+  height: auto;
+  color: #0F172A;
+  font-family: 'Bricolage Grotesque', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-a-footer-link-showroom-154n32c {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 320px;
+  height: auto;
+  color: #0F172A;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-p-break-the-scroll-with-a-37mnb8 {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 380px;
+  height: auto;
+  color: #475569;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-p-features-showcase-do-ihikpy {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 460px;
+  height: auto;
+  color: #475569;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-a-footer-link-company-1tc8o14 {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 320px;
+  height: auto;
+  color: #0F172A;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-p-about-careers-contac-19mtwe6 {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 460px;
+  height: auto;
+  color: #475569;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-p-2026-aerasolo-all-rig-n2l5rm {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 100%;
+  color: #64748B;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+/* ========================================================================== */
+/* ROOT ARTBOARD: About (1440x2772px) */
+/* ========================================================================== */
+
+.dk-about-1hocwrm {
+  --dk-design-width: 1440;
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0px;
+  overflow-x: clip;
+  background-color: #EFF6FF;
+}
+
+
+/* ==================== SECTION: header — Navbar ==================== */
+
+.dk-header-navbar-12j8zgu {
+  position: sticky !important;
+  top: 0 !important;
+  left: 0;
+  width: 100%;
+  min-height: 72px;
+  z-index: 1000 !important;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 0px clamp(16px, 4vw, 24px);
+  background-color: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+}
+
+.dk-div-section-bg-3dar1e {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 999px;
+  border: 1px solid #E2E8F0;
+}
+
+.dk-nav-container-1hmfk0o {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1140px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-inline: clamp(16px, 4vw, 40px);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 16px clamp(16px, 4vw, 16px) 16px clamp(16px, 4vw, 16px);
+}
+
+.dk-div-row-402p0b {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1140px;
+  height: auto;
+}
+
+.dk-a-brand-personal-1y5ei4o {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 320px;
+  height: auto;
+  color: #2563EB;
+  font-family: 'Fredoka', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-a-nav-link-our-story-1yzdb7l {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 320px;
+  height: auto;
+  color: #0F172A;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-a-nav-link-values-1ypdpim {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 320px;
+  height: auto;
+  color: #0F172A;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-a-nav-link-team-i8gmf {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 320px;
+  height: auto;
+  color: #0F172A;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-a-nav-link-careers-88uxg {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 320px;
+  height: auto;
+  color: #0F172A;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-button-meet-the-team-1wrdc5u {
+  position: relative;
+  z-index: 1;
+  width: fit-content;
+  min-width: 160px;
+  max-width: 100%;
+  min-height: 48px;
+  background-color: #2563EB;
+  border-radius: 999px;
+  border: 1.5px solid #1E293B;
+}
+
+
+/* ==================== SECTION: section#hero — Hero ==================== */
+
+.dk-section-hero-hero-sh083w {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.dk-div-container-1x2kxlo {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 24px clamp(16px, 4vw, 24px) 24px clamp(16px, 4vw, 24px);
+}
+
+.dk-div-grid-40c989 {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.dk-article-card-1f1ezqj {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 620px;
+  height: auto;
+}
+
+.dk-div-section-bg-1zcqkj {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 32px;
+  border: 1px solid #E2E8F0;
+}
+
+.dk-button-our-story-est-2026-1x1cxut {
+  position: relative;
+  z-index: 1;
+  width: fit-content;
+  min-width: 160px;
+  max-width: 100%;
+  min-height: 42px;
+  background-color: #DBEAFE;
+  border-radius: 999px;
+  border: 1.5px solid #E2E8F0;
+}
+
+.dk-h1-we-make-software-that-fe-127o0d {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 532px;
+  height: auto;
+  color: #0F172A;
+  font-family: 'Fredoka', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: clamp(26px, 3.06vw, 44px);
+  font-weight: 800;
+  line-height: 1.18;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-h3-personal-began-as-a-shar-s82be {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 532px;
+  height: auto;
+  color: #475569;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-button-meet-the-team-1w7e4rw {
+  position: relative;
+  z-index: 1;
+  width: fit-content;
+  min-width: 160px;
+  max-width: 100%;
+  min-height: 56px;
+  background-color: #2563EB;
+  border-radius: 14px;
+  border: 1.5px solid #1E293B;
+}
+
+.dk-button-read-our-2026-letter-1whdqgv {
+  position: relative;
+  z-index: 1;
+  width: fit-content;
+  min-width: 160px;
+  max-width: 100%;
+  min-height: 56px;
+  background-color: #EFF6FF;
+  border-radius: 14px;
+  border: 1.5px solid #E2E8F0;
+}
+
+.dk-img-hero-bento-main-phot-1w7az9x {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 632px;
+  aspect-ratio: 632 / 324;
+  height: auto;
+  background-image: url("https://images.pexels.com/photos/4778637/pexels-photo-4778637.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 28px;
+  border: 1px solid transparent;
+}
+
+.dk-img-hero-pexels-video-re-1vxbdky {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 304px;
+  aspect-ratio: 304 / 192;
+  height: auto;
+  background-image: url("https://images.pexels.com/videos/7774938/pexels-photo-7774938.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=630&w=1200");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 24px;
+  border: 1px solid transparent;
+}
+
+.dk-article-card-1g5deif {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 304px;
+  height: auto;
+}
+
+.dk-div-card-surface-3nacqd {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 24px;
+  border: 1px solid #2563EB;
+}
+
+.dk-span-badge-38-humans-12-countries-1w7ha9v {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 320px;
+  height: auto;
+  color: #0F172A;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-h2-no-hq-theatre-we-work-w-1vxhokw {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 320px;
+  height: auto;
+  color: #0F172A;
+  font-family: 'Fredoka', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-button-4k-video-reel-1vnexdy {
+  position: relative;
+  z-index: 1;
+  width: fit-content;
+  min-width: 154px;
+  max-width: 100%;
+  min-height: 42px;
+  background-color: #090D16;
+  border-radius: 999px;
+  border: 1.5px solid #1E293B;
+}
+
+.dk-span-badge-what-we-stand-for-12atic {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 400px;
+  height: auto;
+  color: #2563EB;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-h1-four-promises-we-refuse-1caf7b {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 780px;
+  height: auto;
+  color: #0F172A;
+  font-family: 'Fredoka', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: clamp(22px, 2.64vw, 38px);
+  font-weight: 800;
+  line-height: 1.18;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-div-grid-ghnkn4 {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.dk-article-card-18k86ty {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 730px;
+  height: auto;
+}
+
+.dk-div-section-bg-29cc9i {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 28px;
+  border: 1px solid #E2E8F0;
+}
+
+.dk-img-bento-1-flagship-pho-1vnbrvz {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 690px;
+  aspect-ratio: 690 / 330;
+  height: auto;
+  background-image: url("https://images.pexels.com/photos/205420/pexels-photo-205420.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 20px;
+  border: 1px solid transparent;
+}
+
+.dk-span-badge-privacy-by-default-1ma0wa {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 320px;
+  height: auto;
+  color: #2563EB;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-h3-0-third-party-trackers-1w9ml9 {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 320px;
+  height: auto;
+  color: #0F172A;
+  font-family: 'Fredoka', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1.45;
+  text-align: right;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-h2-your-data-is-yours-full-1yzggpk {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 470px;
+  height: auto;
+  color: #0F172A;
+  font-family: 'Fredoka', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-p-no-ad-targeting-no-data-8c0ff {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 470px;
+  height: auto;
+  color: #475569;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-button-read-the-policy-1vxej2x {
+  position: relative;
+  z-index: 1;
+  width: fit-content;
+  min-width: 160px;
+  max-width: 100%;
+  min-height: 50px;
+  background-color: #2563EB;
+  border-radius: 14px;
+  border: 1.5px solid #1E293B;
+}
+
+.dk-article-card-18a8l4z {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 522px;
+  height: auto;
+}
+
+.dk-div-card-surface-3x9yfc {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 24px;
+  border: 1px solid #E2E8F0;
+}
+
+.dk-img-bento-2-photo-1vdc670 {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 190px;
+  aspect-ratio: 190 / 232;
+  height: auto;
+  background-image: url("https://images.pexels.com/photos/273230/pexels-photo-273230.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 18px;
+  border: 1px solid transparent;
+}
+
+.dk-span-badge-craft-over-speed-ibm4e {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 320px;
+  height: auto;
+  color: #2563EB;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-h3-small-team-obsessive-de-sb7td {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 320px;
+  height: auto;
+  color: #0F172A;
+  font-family: 'Fredoka', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-button-see-how-we-build-1v3fq00 {
+  position: relative;
+  z-index: 1;
+  width: fit-content;
+  min-width: 160px;
+  max-width: 100%;
+  min-height: 42px;
+  background-color: #2563EB;
+  border-radius: 12px;
+  border: 1.5px solid #1E293B;
+}
+
+.dk-p-every-screen-is-reviewed-1xvi1xo {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 320px;
+  height: auto;
+  color: #475569;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-article-card-1808zg0 {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 522px;
+  height: auto;
+}
+
+.dk-div-card-surface-479k4b {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 24px;
+  border: 1px solid #E2E8F0;
+}
+
+.dk-img-bento-3-photo-1xb9e1t {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 190px;
+  aspect-ratio: 190 / 232;
+  height: auto;
+  background-image: url("https://images.pexels.com/photos/6023605/pexels-photo-6023605.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 18px;
+  border: 1px solid transparent;
+}
+
+.dk-span-badge-honest-pricing-1y5hnmn {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 320px;
+  height: auto;
+  color: #2563EB;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-h3-one-price-no-dark-patte-128wpyl {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 320px;
+  height: auto;
+  color: #0F172A;
+  font-family: 'Fredoka', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-p-free-to-start-six-dolla-11yx49m {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 320px;
+  height: auto;
+  color: #475569;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-button-see-pricing-1vdfboz {
+  position: relative;
+  z-index: 1;
+  width: fit-content;
+  min-width: 160px;
+  max-width: 100%;
+  min-height: 42px;
+  background-color: #2563EB;
+  border-radius: 12px;
+  border: 1.5px solid #1E293B;
+}
+
+
+/* ==================== SECTION: section#features — Features ==================== */
+
+.dk-section-features-features-taz16t {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.dk-div-container-x9w47x {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 24px clamp(16px, 4vw, 24px) 24px clamp(16px, 4vw, 24px);
+}
+
+.dk-div-row-15r1ejl {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.dk-div-col-3splz8 {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 628px;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.dk-article-card-1xxuwzm {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 302px;
+  height: auto;
+}
+
+.dk-div-card-surface-1v3cki1 {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 22px;
+  border: 1px solid #2563EB;
+}
+
+.dk-h1-2-4m-11oxikn {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 320px;
+  height: auto;
+  color: #2563EB;
+  font-family: 'Fredoka', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: clamp(22px, 2.22vw, 32px);
+  font-weight: 800;
+  line-height: 1.18;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-p-people-who-plan-here-11exwvo {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 320px;
+  height: auto;
+  color: #475569;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-article-card-1xnvban {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 302px;
+  height: auto;
+}
+
+.dk-div-card-surface-1utcyt2 {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 22px;
+  border: 1px solid #E2E8F0;
+}
+
+.dk-h1-38-114yb6p {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 320px;
+  height: auto;
+  color: #2563EB;
+  font-family: 'Fredoka', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: clamp(22px, 2.22vw, 32px);
+  font-weight: 800;
+  line-height: 1.18;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-p-people-on-the-team-10uyphq {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 320px;
+  height: auto;
+  color: #475569;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-div-col-k9x94h {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 628px;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.dk-article-card-qzuapr {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 302px;
+  height: auto;
+}
+
+.dk-div-card-surface-1ujdd43 {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 22px;
+  border: 1px solid #E2E8F0;
+}
+
+.dk-h1-12-10kz3sr {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 320px;
+  height: auto;
+  color: #2563EB;
+  font-family: 'Fredoka', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: clamp(22px, 2.22vw, 32px);
+  font-weight: 800;
+  line-height: 1.18;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-p-countries-we-work-from-10azi3s {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 320px;
+  height: auto;
+  color: #475569;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-article-card-r9tweq {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 302px;
+  height: auto;
+}
+
+.dk-div-card-surface-1u9drf4 {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 22px;
+  border: 1px solid #E2E8F0;
+}
+
+.dk-h1-0-100zwet {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 320px;
+  height: auto;
+  color: #2563EB;
+  font-family: 'Fredoka', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: clamp(22px, 2.22vw, 32px);
+  font-weight: 800;
+  line-height: 1.18;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-p-ads-ever-shipped-zr0apu {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 320px;
+  height: auto;
+  color: #475569;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+
+/* ==================== SECTION: section#showcase — Showcase ==================== */
+
+.dk-section-showcase-showcase-t0zfhu {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.dk-div-section-bg-2jbxyh {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 32px;
+  border: 1px solid #E2E8F0;
+}
+
+.dk-div-container-celhuq {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1204px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-inline: clamp(16px, 4vw, 40px);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 24px clamp(16px, 4vw, 24px) 24px clamp(16px, 4vw, 24px);
+}
+
+.dk-div-row-ga8sjm {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1204px;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.dk-div-col-1gz5uip {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 560px;
+  height: auto;
+}
+
+.dk-img-feature-showcase-pex-1x19scu {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 560px;
+  aspect-ratio: 560 / 428;
+  height: auto;
+  background-image: url("https://images.pexels.com/photos/4492135/pexels-photo-4492135.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 22px;
+  border: 1px solid transparent;
+}
+
+.dk-button-pexels-hd-feature-1yza5pm {
+  position: relative;
+  z-index: 1;
+  width: fit-content;
+  min-width: 160px;
+  max-width: 100%;
+  min-height: 42px;
+  background-color: #EFF6FF;
+  border-radius: 999px;
+  border: 1.5px solid #E2E8F0;
+}
+
+.dk-div-col-3ule8y {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 600px;
+  height: auto;
+}
+
+.dk-span-badge-inside-the-studio-v1a7fa {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 600px;
+  height: auto;
+  color: #2563EB;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-h1-built-in-lisbon-krak-w-vb9t49 {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 600px;
+  height: auto;
+  color: #0F172A;
+  font-family: 'Fredoka', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: clamp(22px, 2.50vw, 36px);
+  font-weight: 800;
+  line-height: 1.18;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-p-four-day-august-no-gu-uhb01c {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 600px;
+  height: auto;
+  color: #475569;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-p-everyone-ships-everyo-uralqb {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 600px;
+  height: auto;
+  color: #475569;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-p-no-open-plan-theatre-w58m76 {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 600px;
+  height: auto;
+  color: #475569;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-button-meet-the-38-85pfh {
+  position: relative;
+  z-index: 1;
+  width: fit-content;
+  min-width: 160px;
+  max-width: 100%;
+  min-height: 52px;
+  background-color: #2563EB;
+  border-radius: 12px;
+  border: 1.5px solid #1E293B;
+}
+
+
+/* ==================== SECTION: section#cta — Call to Action ==================== */
+
+.dk-section-cta-call-to-action-rn1f0z {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.dk-div-section-bg-2tbjng {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 28px;
+  border: 1px solid #2563EB;
+}
+
+.dk-div-container-yzq7kb {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1168px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-inline: clamp(16px, 4vw, 40px);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 24px clamp(16px, 4vw, 24px) 24px clamp(16px, 4vw, 24px);
+}
+
+.dk-div-row-1t3rvou {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1168px;
+  height: auto;
+}
+
+.dk-h1-come-build-something-peo-wf87w5 {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 720px;
+  height: auto;
+  color: #0F172A;
+  font-family: 'Fredoka', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: clamp(22px, 2.36vw, 34px);
+  font-weight: 800;
+  line-height: 1.18;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-button-see-open-roles-1yfe3tn {
+  position: relative;
+  z-index: 1;
+  width: fit-content;
+  min-width: 160px;
+  max-width: 100%;
+  min-height: 56px;
+  background-color: #2563EB;
+  border-radius: 14px;
+  border: 1.5px solid #1E293B;
+}
+
+.dk-p-we-re-hiring-designers-vl9et8 {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 720px;
+  height: auto;
+  color: #475569;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+
+/* ==================== SECTION: footer — Site Footer ==================== */
+
+.dk-footer-site-footer-9lq744 {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.dk-div-section-bg-33b5cf {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  border: 1px solid #E2E8F0;
+}
+
+.dk-div-container-1e19bes {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 24px clamp(16px, 4vw, 24px) 24px clamp(16px, 4vw, 24px);
+}
+
+.dk-div-row-1uzitkv {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 100%;
+}
+
+.dk-p-overview-features-pricin-vv90i7 {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 100%;
+  color: #0F172A;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.45;
+  text-align: center;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-h3-personal-x970z2 {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 100%;
+  color: #2563EB;
+  font-family: 'Fredoka', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: clamp(39px, 4.72vw, 68px);
+  font-weight: 800;
+  line-height: 1.18;
+  text-align: center;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-p-2026-personal-crafted-xj6mo1 {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 100%;
+  color: #475569;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.45;
+  text-align: center;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+/* Responsive Breakpoints (TAB <= 1024px & MOB <= 768px) */
+@media (max-width: 1024px) {
+  .dk-interactive-btn,
+  .dk-interactive-input {
+    min-height: 40px;
+  }
+  .dk-mobile-menu-btn {
+    display: inline-flex;
+    margin-left: auto;
+  }
+  [data-dk-navbar="true"] nav,
+  [data-dk-navbar="true"] .dk-interactive-link,
+  [data-dk-navbar="true"] .dk-interactive-btn:not(.dk-mobile-menu-btn),
+  [data-dk-navbar="true"] [data-auto-layout="horizontal"] > a.dk-interactive-link {
+    display: none !important;
+  }
+  [data-dk-navbar="true"].dk-mobile-nav-open nav,
+  [data-dk-navbar="true"].dk-mobile-nav-open [data-auto-layout="horizontal"] > a.dk-interactive-link {
+    display: flex !important;
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    padding-top: 10px;
+  }
+  [data-dk-navbar="true"] + section,
+  header + section,
+  nav + section {
+    margin-top: 40px !important;
+  }
+  section > div,
+  section > [data-auto-layout] {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  [data-auto-layout="horizontal"]:not([data-dk-navbar="true"]) {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+  [data-dk-navbar="true"] + section,
+  header + section,
+  nav + section {
+    margin-top: 40px !important;
+  }
+  section,
+  section > div,
+  section > [data-auto-layout] {
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .dk-toast-notification {
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+    justify-content: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+  </style>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body id="top">
+  <!-- ==========================================================================
+       DesignKoro Studio — Semantic Responsive Auto-Layout Root
+       Sections: <header> Navbar -> <section#hero> -> <section> Content -> <footer>
+       ========================================================================== -->
+  <div id="root">
+  <main class="dk-canvas-viewport">
+    <div id="home" class="dk-root-frame dk-home-5bv7m6" data-frame-name="Home" data-design-width="1440" data-design-height="2820">
+      <!-- ==================== HEADER — NAVBAR ==================== -->
+      <header data-dk-navbar="true" class="dk-sticky-navbar dk-header-navbar-gz3ted" data-frame-name="header — Navbar">
+        <div class="dk-div-section-bg-1npa6lw"></div>
+        <!-- Auto-Layout: nav.container -->
+        <nav class="dk-nav-container-8blrqo" data-frame-name="nav.container">
+          <!-- Auto-Layout: div.row -->
+          <div class="dk-div-row-1ylepjc" data-frame-name="div.row">
+            <a href="#aerasolo" class="dk-interactive-link dk-a-brand-aerasolo-1urvz09">AERASOLO</a>
+            <a href="#about" class="dk-interactive-link dk-a-nav-link-features-1uwb669">About</a>
+            <a href="#hardware" class="dk-interactive-link dk-a-nav-link-hardware-1o7xfdp">Hardware</a>
+            <a href="#journal" class="dk-interactive-link dk-a-nav-link-journal-1imhwuc">Journal</a>
+            <a href="#login" class="dk-interactive-link dk-a-nav-link-login-1g8dcak">Login</a>
+            <button type="button" class="dk-interactive-btn dk-button-join-the-grid-azlkca" data-dk-action="Join the Grid" data-dk-target="#button-join-the-grid" style="display: inline-flex; align-items: center; justify-content: center; font-weight: 600; font-size: 14px; color: #FFFFFF; border: 1.5px solid #1E293B;"><span>Join the Grid</span></button>
+          </div>
+        </nav>
+        <button type="button" class="dk-mobile-menu-btn" aria-label="Toggle menu" aria-expanded="false">☰</button>
+      </header>
+      <!-- ==================== SECTION#HERO — HERO ==================== -->
+      <section id="hero" class="dk-section-hero-hero-yy4xal" data-frame-name="section#hero — Hero">
+        <div class="dk-div-section-bg-1h2ipam"></div>
+        <!-- Auto-Layout: div.container -->
+        <div class="dk-div-container-1d6nwic" data-frame-name="div.container">
+          <!-- Auto-Layout: div.row -->
+          <div class="dk-div-row-1jtw8g8" data-frame-name="div.row">
+            <!-- Auto-Layout: div.col -->
+            <div class="dk-div-col-14aosbo" data-frame-name="div.col">
+              <img class="dk-img-hero-studio-spotligh-109sx6o" src="https://images.pexels.com/photos/36566629/pexels-photo-36566629.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=2&amp;h=650&amp;w=940" alt="img (Hero / Studio Spotligh)" loading="lazy" style="object-fit: cover; display: block;" />
+              <img class="dk-img-hero-studio-video-re-37vv7z" src="https://images.pexels.com/videos/38781554/pexels-photo-38781554.jpeg?auto=compress&amp;cs=tinysrgb&amp;fit=crop&amp;h=630&amp;w=1200" alt="img (Hero / Studio Video Re)" loading="lazy" style="object-fit: cover; display: block;" />
+              <!-- Auto-Layout: article.card -->
+              <article class="dk-interactive-card dk-article-card-1gztmv4" data-frame-name="article.card">
+                <div class="dk-div-card-surface-fjutyo"></div>
+                <span class="dk-span-badge-syne-sync-89x7os">SYNE SYNC</span>
+                <h2 class="dk-h2-active-now-17ekz9">ACTIVE NOW</h2>
+              </article>
+            </div>
+            <!-- Auto-Layout: div.col -->
+            <div class="dk-div-col-tv0bs6" data-frame-name="div.col">
+              <button type="button" class="dk-interactive-btn dk-button-social-evolution-2026-1kgw3zl" data-dk-action="✦  SOCIAL EVOLUTION 2026" data-dk-target="#button-social-evolution-2026" style="display: inline-flex; align-items: center; justify-content: center; font-weight: 600; font-size: 14px; color: #FFFFFF; border: 1.5px solid #1E293B;"><span>✦  SOCIAL EVOLUTION 2026</span></button>
+              <h1 class="dk-h1-reclaim-your-digital-soc-11gmd0l">RECLAIM YOUR DIGITAL SOCIAL DEPTH</h1>
+              <h3 class="dk-h3-break-the-scroll-with-a-5c4oz">Break the scroll with a kinetic interface designed for Tokyo's restless nights and high-fidelity human connections.</h3>
+              <button type="button" class="dk-interactive-btn dk-button-join-the-grid-1so7qv2" data-dk-action="Join the Grid" data-dk-target="#button-join-the-grid" style="display: inline-flex; align-items: center; justify-content: center; font-weight: 600; font-size: 14px; color: #FFFFFF; border: 1.5px solid #1E293B;"><span>Join the Grid</span></button>
+              <button type="button" class="dk-interactive-btn dk-button-view-manifest-yep9hi" data-dk-action="View Manifest" data-dk-target="#button-view-manifest" style="display: inline-flex; align-items: center; justify-content: center; font-weight: 600; font-size: 14px; color: #FAFAFA; border: 1.5px solid #2E3440;"><span>View Manifest</span></button>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- ==================== SECTION#FEATURES — FEATURES ==================== -->
+      <section id="features" class="dk-section-features-features-12hr28h" data-frame-name="section#features — Features">
+        <!-- Auto-Layout: div.container -->
+        <div class="dk-div-container-nc9urc" data-frame-name="div.container">
+          <!-- Auto-Layout: div.grid -->
+          <div class="dk-div-grid-1t9u2iq" data-frame-name="div.grid">
+            <!-- Auto-Layout: article.card -->
+            <article class="dk-interactive-card dk-article-card-j46t78" data-frame-name="article.card">
+              <div class="dk-div-card-surface-2u5et7"></div>
+              <h1 class="dk-h1-1-2m-1h3jyc3">1.2M</h1>
+              <p class="dk-p-night-walkers-1hcelu6">Night Walkers</p>
+            </article>
+            <!-- Auto-Layout: article.card -->
+            <article class="dk-interactive-card dk-article-card-1jtnzgy" data-frame-name="article.card">
+              <div class="dk-div-card-surface-1pw2rbo"></div>
+              <h1 class="dk-h1-20ms-1euoyhm">20ms</h1>
+              <p class="dk-p-latent-sync-1h0k6e6">Latent Sync</p>
+            </article>
+            <!-- Auto-Layout: article.card -->
+            <article class="dk-interactive-card dk-article-card-1kaerzn" data-frame-name="article.card">
+              <div class="dk-div-card-surface-ghy2r1"></div>
+              <h1 class="dk-h1-4k-197yfnp">4K</h1>
+              <p class="dk-p-social-fidelity-1jiwdai">Social Fidelity</p>
+            </article>
+          </div>
+          <span class="dk-span-badge-engineered-for-flow-1k2iz16">ENGINEERED FOR FLOW</span>
+          <h1 class="dk-h1-the-shibuya-system-3ayhqd">THE SHIBUYA SYSTEM</h1>
+          <!-- Auto-Layout: div.grid -->
+          <div class="dk-div-grid-1pztmot" data-frame-name="div.grid">
+            <!-- Auto-Layout: article.card -->
+            <article class="dk-article-card-l0jtyw" data-frame-name="article.card">
+              <div class="dk-div-section-bg-66oocj"></div>
+              <img class="dk-img-bento-1-flagship-pho-vk1o4d" src="https://images.pexels.com/photos/19969441/pexels-photo-19969441.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=2&amp;h=650&amp;w=940" alt="img (Bento 1 / Flagship Pho)" loading="lazy" style="object-fit: cover; display: block;" />
+              <span class="dk-span-badge-vision-g6ssv5">VISION</span>
+              <h3 class="dk-h3-0ms-lag-fowhg4">0ms LAG</h3>
+              <h2 class="dk-h2-prism-lens-255n5n">Prism Lens</h2>
+              <p class="dk-p-real-time-color-grading-mhy3o1">Real-time color grading inspired by cinematic Tokyo nightscapes for every shot.</p>
+              <button type="button" class="dk-interactive-btn dk-button-view-samples-1xbb3ce" data-dk-action="View Samples" data-dk-target="#button-view-samples" style="display: inline-flex; align-items: center; justify-content: center; font-weight: 600; font-size: 14px; color: #FFFFFF; border: 1.5px solid #1E293B;"><span>View Samples</span></button>
+            </article>
+            <!-- Auto-Layout: article.card -->
+            <article class="dk-interactive-card dk-article-card-18hnnxx" data-frame-name="article.card">
+              <div class="dk-div-card-surface-1wmqblc"></div>
+              <img class="dk-img-bento-2-photo-f3ht1l" src="https://images.pexels.com/photos/10289009/pexels-photo-10289009.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=2&amp;h=650&amp;w=940" alt="img (Bento 2 / Photo)" loading="lazy" style="object-fit: cover; display: block;" />
+              <span class="dk-span-badge-speed-1fkjr03">SPEED</span>
+              <h3 class="dk-h3-kinetic-feed-kq66j1">Kinetic Feed</h3>
+              <p class="dk-p-a-fluid-gravity-based-b-s75tlj">A fluid, gravity-based browsing experience that moves with your thumb's inertia.</p>
+              <button type="button" class="dk-interactive-btn dk-button-demo-motion-i2q9c" data-dk-action="Demo Motion" data-dk-target="#button-demo-motion" style="display: inline-flex; align-items: center; justify-content: center; font-weight: 600; font-size: 14px; color: #FFFFFF; border: 1.5px solid #1E293B;"><span>Demo Motion</span></button>
+            </article>
+            <!-- Auto-Layout: article.card -->
+            <article class="dk-interactive-card dk-article-card-adod7t" data-frame-name="article.card">
+              <div class="dk-div-card-surface-yb70ix"></div>
+              <img class="dk-img-bento-3-photo-73qf4i" src="https://images.pexels.com/photos/8111454/pexels-photo-8111454.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=2&amp;h=650&amp;w=940" alt="img (Bento 3 / Photo)" loading="lazy" style="object-fit: cover; display: block;" />
+              <span class="dk-span-badge-depth-15wqdwq">DEPTH</span>
+              <h3 class="dk-h3-spatial-dms-xz0am0">Spatial DMs</h3>
+              <p class="dk-p-connect-in-3d-soundscape-1a6r184">Connect in 3D soundscapes that mimic the acoustics of a Shibuya hidden bar.</p>
+              <button type="button" class="dk-interactive-btn dk-button-open-audio-lgc99s" data-dk-action="Open Audio" data-dk-target="#button-open-audio" style="display: inline-flex; align-items: center; justify-content: center; font-weight: 600; font-size: 14px; color: #FFFFFF; border: 1.5px solid #1E293B;"><span>Open Audio</span></button>
+            </article>
+          </div>
+        </div>
+      </section>
+      <!-- ==================== SECTION#SHOWCASE — SHOWCASE ==================== -->
+      <section id="showcase" class="dk-section-showcase-showcase-1c3ylzh" data-frame-name="section#showcase — Showcase">
+        <div class="dk-div-section-bg-16e6vik"></div>
+        <!-- Auto-Layout: div.container -->
+        <div class="dk-div-container-1qqgm3w" data-frame-name="div.container">
+          <!-- Auto-Layout: div.row -->
+          <div class="dk-div-row-cpwn01" data-frame-name="div.row">
+            <!-- Auto-Layout: div.col -->
+            <div class="dk-div-col-1i2bln6" data-frame-name="div.col">
+              <img class="dk-img-feature-showcase-pex-w3wj03" src="https://images.pexels.com/photos/16029615/pexels-photo-16029615.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=2&amp;h=650&amp;w=940" alt="img (Feature Showcase / Pex)" loading="lazy" style="object-fit: cover; display: block;" />
+              <button type="button" class="dk-interactive-btn dk-button-pexels-hd-feature-1452krt" data-dk-action="▶ Pexels HD Feature" data-dk-target="#button-pexels-hd-feature" style="display: inline-flex; align-items: center; justify-content: center; font-weight: 600; font-size: 14px; color: #FFFFFF; border: 1.5px solid #2E3440;"><span>▶ Pexels HD Feature</span></button>
+            </div>
+            <!-- Auto-Layout: div.col -->
+            <div class="dk-div-col-12lsbfk" data-frame-name="div.col">
+              <span class="dk-span-badge-visual-sovereignty-zytprk">VISUAL SOVEREIGNTY</span>
+              <h1 class="dk-h1-night-mode-by-default-1dajiol">NIGHT MODE BY DEFAULT</h1>
+              <p class="dk-p-oled-optimization-1w6vbs1">✓   OLED Optimization</p>
+              <p class="dk-p-zero-blue-light-mode-bqnnx9">✓   Zero Blue Light Mode</p>
+              <p class="dk-p-retinal-sync-2-0-1o6lg6q">✓   Retinal Sync 2.0</p>
+              <button type="button" class="dk-interactive-btn dk-button-explore-interface-1pl8sbq" data-dk-action="Explore Interface" data-dk-target="#button-explore-interface" style="display: inline-flex; align-items: center; justify-content: center; font-weight: 600; font-size: 14px; color: #FFFFFF; border: 1.5px solid #1E293B;"><span>Explore Interface</span></button>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- ==================== SECTION#CTA — CALL TO ACTION ==================== -->
+      <section id="cta" class="dk-section-cta-call-to-action-5cdqv7" data-frame-name="section#cta — Call to Action">
+        <div class="dk-div-section-bg-16aa18f"></div>
+        <!-- Auto-Layout: div.container -->
+        <div class="dk-div-container-npeb2z" data-frame-name="div.container">
+          <!-- Auto-Layout: div.row -->
+          <div class="dk-div-row-3ten47" data-frame-name="div.row">
+            <h1 class="dk-h1-ready-for-the-night-1iyspzq">READY FOR THE NIGHT?</h1>
+            <button type="button" class="dk-interactive-btn dk-button-secure-access-1u9zu9n" data-dk-action="Secure Access" data-dk-target="#button-secure-access" style="display: inline-flex; align-items: center; justify-content: center; font-weight: 600; font-size: 14px; color: #FFFFFF; border: 1.5px solid #1E293B;"><span>Secure Access</span></button>
+            <p class="dk-p-secure-your-2026-alpha-i-os6gem">Secure your 2026 alpha invite and redefine your social trajectory today.</p>
+          </div>
+        </div>
+      </section>
+      <!-- ==================== FOOTER — SITE FOOTER ==================== -->
+      <footer class="dk-footer-site-footer-qv9dku" data-frame-name="footer — Site Footer">
+        <div class="dk-div-section-bg-fa3kyy"></div>
+        <!-- Auto-Layout: div.container -->
+        <div class="dk-div-container-1bpvp8n" data-frame-name="div.container">
+          <!-- Auto-Layout: div.row -->
+          <div class="dk-div-row-11a8yje" data-frame-name="div.row">
+            <h3 class="dk-h3-aerasolo-nfnch8">AERASOLO</h3>
+            <a href="#showroom" class="dk-interactive-link dk-a-footer-link-showroom-154n32c">SHOWROOM</a>
+            <p class="dk-p-break-the-scroll-with-a-37mnb8">Break the scroll with a kinetic interface designed for Tokyo's restless nights and high-</p>
+            <p class="dk-p-features-showcase-do-ihikpy">Features  ·  Showcase  ·  Documentation</p>
+            <a href="#about" class="dk-interactive-link dk-a-footer-link-company-1tc8o14">COMPANY</a>
+            <p class="dk-p-about-careers-contac-19mtwe6">About  ·  Careers  ·  Contact Support</p>
+            <p class="dk-p-2026-aerasolo-all-rig-n2l5rm">© 2026 AERASOLO. All rights reserved.</p>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <div id="about" class="dk-root-frame dk-about-1hocwrm" data-frame-name="About" data-design-width="1440" data-design-height="2772">
+      <!-- ==================== HEADER — NAVBAR ==================== -->
+      <header data-dk-navbar="true" class="dk-sticky-navbar dk-header-navbar-12j8zgu" data-frame-name="header — Navbar">
+        <div class="dk-div-section-bg-3dar1e"></div>
+        <!-- Auto-Layout: nav.container -->
+        <nav class="dk-nav-container-1hmfk0o" data-frame-name="nav.container">
+          <!-- Auto-Layout: div.row -->
+          <div class="dk-div-row-402p0b" data-frame-name="div.row">
+            <a href="#personal" class="dk-interactive-link dk-a-brand-personal-1y5ei4o">PERSONAL</a>
+            <a href="#button-our-story-est-2026" class="dk-interactive-link dk-a-nav-link-our-story-1yzdb7l">Our Story</a>
+            <a href="#values" class="dk-interactive-link dk-a-nav-link-values-1ypdpim">Values</a>
+            <a href="#button-meet-the-team" class="dk-interactive-link dk-a-nav-link-team-i8gmf">Team</a>
+            <a href="#careers" class="dk-interactive-link dk-a-nav-link-careers-88uxg">Careers</a>
+            <button type="button" class="dk-interactive-btn dk-button-meet-the-team-1wrdc5u" data-dk-action="Meet the team" data-dk-target="#button-meet-the-team" style="display: inline-flex; align-items: center; justify-content: center; font-weight: 600; font-size: 14px; color: #FFFFFF; border: 1.5px solid #1E293B;"><span>Meet the team</span></button>
+          </div>
+        </nav>
+        <button type="button" class="dk-mobile-menu-btn" aria-label="Toggle menu" aria-expanded="false">☰</button>
+      </header>
+      <!-- ==================== SECTION#HERO — HERO ==================== -->
+      <section id="hero" class="dk-section-hero-hero-sh083w" data-frame-name="section#hero — Hero">
+        <!-- Auto-Layout: div.container -->
+        <div class="dk-div-container-1x2kxlo" data-frame-name="div.container">
+          <!-- Auto-Layout: div.grid -->
+          <div class="dk-div-grid-40c989" data-frame-name="div.grid">
+            <!-- Auto-Layout: article.card -->
+            <article class="dk-interactive-card dk-article-card-1f1ezqj" data-frame-name="article.card">
+              <div class="dk-div-section-bg-1zcqkj"></div>
+              <button type="button" class="dk-interactive-btn dk-button-our-story-est-2026-1x1cxut" data-dk-action="✦  OUR STORY · EST. 2026 · L" data-dk-target="#about" style="display: inline-flex; align-items: center; justify-content: center; font-weight: 600; font-size: 12px; color: #0F172A; border: 1.5px solid #E2E8F0;"><span>✦  OUR STORY · EST. 2026 · L</span></button>
+              <h1 class="dk-h1-we-make-software-that-fe-127o0d">We make software that feels personal.</h1>
+              <h3 class="dk-h3-personal-began-as-a-shar-s82be">Personal began as a shared notes doc between three friends who were tired of apps that treated them like a funnel. Today it's home base for 2.4 million calendars, grocery lists, and quietly ambitious plans — still bootstrapped, still arguing about icons.</h3>
+              <button type="button" class="dk-interactive-btn dk-button-meet-the-team-1w7e4rw" data-dk-action="Meet the team" data-dk-target="#button-meet-the-team" style="display: inline-flex; align-items: center; justify-content: center; font-weight: 600; font-size: 15px; color: #FFFFFF; border: 1.5px solid #1E293B;"><span>Meet the team</span></button>
+              <button type="button" class="dk-interactive-btn dk-button-read-our-2026-letter-1whdqgv" data-dk-action="Read our 2026 letter" data-dk-target="#button-read-our-2026-letter" style="display: inline-flex; align-items: center; justify-content: center; font-weight: 600; font-size: 15px; color: #0F172A; border: 1.5px solid #E2E8F0;"><span>Read our 2026 letter</span></button>
+            </article>
+            <img class="dk-img-hero-bento-main-phot-1w7az9x" src="https://images.pexels.com/photos/4778637/pexels-photo-4778637.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=2&amp;h=650&amp;w=940" alt="img (Hero / Bento Main Phot)" loading="lazy" style="object-fit: cover; display: block;" />
+            <img class="dk-img-hero-pexels-video-re-1vxbdky" src="https://images.pexels.com/videos/7774938/pexels-photo-7774938.jpeg?auto=compress&amp;cs=tinysrgb&amp;fit=crop&amp;h=630&amp;w=1200" alt="img (Hero / Pexels Video Re)" loading="lazy" style="object-fit: cover; display: block;" />
+            <!-- Auto-Layout: article.card -->
+            <article class="dk-interactive-card dk-article-card-1g5deif" data-frame-name="article.card">
+              <div class="dk-div-card-surface-3nacqd"></div>
+              <span class="dk-span-badge-38-humans-12-countries-1w7ha9v">38 HUMANS, 12 COUNTRIES</span>
+              <h2 class="dk-h2-no-hq-theatre-we-work-w-1vxhokw">No HQ theatre. We work where the light is good.</h2>
+            </article>
+            <button type="button" class="dk-interactive-btn dk-button-4k-video-reel-1vnexdy" data-dk-action="▶ 4K Video Reel" data-dk-target="#button-4k-video-reel" style="display: inline-flex; align-items: center; justify-content: center; font-weight: 600; font-size: 14px; color: #FFFFFF; border: 1.5px solid #1E293B;"><span>▶ 4K Video Reel</span></button>
+          </div>
+          <span class="dk-span-badge-what-we-stand-for-12atic">WHAT WE STAND FOR</span>
+          <h1 class="dk-h1-four-promises-we-refuse-1caf7b">Four promises we refuse to break.</h1>
+          <!-- Auto-Layout: div.grid -->
+          <div class="dk-div-grid-ghnkn4" data-frame-name="div.grid">
+            <!-- Auto-Layout: article.card -->
+            <article class="dk-article-card-18k86ty" data-frame-name="article.card">
+              <div class="dk-div-section-bg-29cc9i"></div>
+              <img class="dk-img-bento-1-flagship-pho-1vnbrvz" src="https://images.pexels.com/photos/205420/pexels-photo-205420.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=2&amp;h=650&amp;w=940" alt="img (Bento 1 / Flagship Pho)" loading="lazy" style="object-fit: cover; display: block;" />
+              <span class="dk-span-badge-privacy-by-default-1ma0wa">PRIVACY BY DEFAULT</span>
+              <h3 class="dk-h3-0-third-party-trackers-1w9ml9">0 third-party trackers</h3>
+              <h2 class="dk-h2-your-data-is-yours-full-1yzggpk">Your data is yours, full stop</h2>
+              <p class="dk-p-no-ad-targeting-no-data-8c0ff">No ad targeting, no data brokers, no shadow profiles. Export everything in one click and we'll delete the rest within 24 hours.</p>
+              <button type="button" class="dk-interactive-btn dk-button-read-the-policy-1vxej2x" data-dk-action="Read the policy" data-dk-target="#button-read-the-policy" style="display: inline-flex; align-items: center; justify-content: center; font-weight: 600; font-size: 14px; color: #FFFFFF; border: 1.5px solid #1E293B;"><span>Read the policy</span></button>
+            </article>
+            <!-- Auto-Layout: article.card -->
+            <article class="dk-interactive-card dk-article-card-18a8l4z" data-frame-name="article.card">
+              <div class="dk-div-card-surface-3x9yfc"></div>
+              <img class="dk-img-bento-2-photo-1vdc670" src="https://images.pexels.com/photos/273230/pexels-photo-273230.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=2&amp;h=650&amp;w=940" alt="img (Bento 2 / Photo)" loading="lazy" style="object-fit: cover; display: block;" />
+              <span class="dk-span-badge-craft-over-speed-ibm4e">CRAFT OVER SPEED</span>
+              <h3 class="dk-h3-small-team-obsessive-de-sb7td">Small team, obsessive details</h3>
+              <button type="button" class="dk-interactive-btn dk-button-see-how-we-build-1v3fq00" data-dk-action="See how we build" data-dk-target="#button-see-how-we-build" style="display: inline-flex; align-items: center; justify-content: center; font-weight: 600; font-size: 13px; color: #FFFFFF; border: 1.5px solid #1E293B;"><span>See how we build</span></button>
+              <p class="dk-p-every-screen-is-reviewed-1xvi1xo">Every screen is reviewed by three people and shipped only when it feels obvious. We'd rather ship twelve good things a year than a hundred forgettable ones.</p>
+            </article>
+            <!-- Auto-Layout: article.card -->
+            <article class="dk-interactive-card dk-article-card-1808zg0" data-frame-name="article.card">
+              <div class="dk-div-card-surface-479k4b"></div>
+              <img class="dk-img-bento-3-photo-1xb9e1t" src="https://images.pexels.com/photos/6023605/pexels-photo-6023605.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=2&amp;h=650&amp;w=940" alt="img (Bento 3 / Photo)" loading="lazy" style="object-fit: cover; display: block;" />
+              <span class="dk-span-badge-honest-pricing-1y5hnmn">HONEST PRICING</span>
+              <h3 class="dk-h3-one-price-no-dark-patte-128wpyl">One price. No dark patterns.</h3>
+              <p class="dk-p-free-to-start-six-dolla-11yx49m">Free to start, six dollars to go all in. Cancel from the settings screen in two taps — we will never make you email support to leave.</p>
+              <button type="button" class="dk-interactive-btn dk-button-see-pricing-1vdfboz" data-dk-action="See pricing" data-dk-target="#button-see-pricing" style="display: inline-flex; align-items: center; justify-content: center; font-weight: 600; font-size: 13px; color: #FFFFFF; border: 1.5px solid #1E293B;"><span>See pricing</span></button>
+            </article>
+          </div>
+        </div>
+      </section>
+      <!-- ==================== SECTION#FEATURES — FEATURES ==================== -->
+      <section id="features" class="dk-section-features-features-taz16t" data-frame-name="section#features — Features">
+        <!-- Auto-Layout: div.container -->
+        <div class="dk-div-container-x9w47x" data-frame-name="div.container">
+          <!-- Auto-Layout: div.row -->
+          <div class="dk-div-row-15r1ejl" data-frame-name="div.row">
+            <!-- Auto-Layout: div.col -->
+            <div class="dk-div-col-3splz8" data-frame-name="div.col">
+              <!-- Auto-Layout: article.card -->
+              <article class="dk-interactive-card dk-article-card-1xxuwzm" data-frame-name="article.card">
+                <div class="dk-div-card-surface-1v3cki1"></div>
+                <h1 class="dk-h1-2-4m-11oxikn">2.4M</h1>
+                <p class="dk-p-people-who-plan-here-11exwvo">People who plan here</p>
+              </article>
+              <!-- Auto-Layout: article.card -->
+              <article class="dk-interactive-card dk-article-card-1xnvban" data-frame-name="article.card">
+                <div class="dk-div-card-surface-1utcyt2"></div>
+                <h1 class="dk-h1-38-114yb6p">38</h1>
+                <p class="dk-p-people-on-the-team-10uyphq">People on the team</p>
+              </article>
+            </div>
+            <!-- Auto-Layout: div.col -->
+            <div class="dk-div-col-k9x94h" data-frame-name="div.col">
+              <!-- Auto-Layout: article.card -->
+              <article class="dk-interactive-card dk-article-card-qzuapr" data-frame-name="article.card">
+                <div class="dk-div-card-surface-1ujdd43"></div>
+                <h1 class="dk-h1-12-10kz3sr">12</h1>
+                <p class="dk-p-countries-we-work-from-10azi3s">Countries we work from</p>
+              </article>
+              <!-- Auto-Layout: article.card -->
+              <article class="dk-interactive-card dk-article-card-r9tweq" data-frame-name="article.card">
+                <div class="dk-div-card-surface-1u9drf4"></div>
+                <h1 class="dk-h1-0-100zwet">0</h1>
+                <p class="dk-p-ads-ever-shipped-zr0apu">Ads ever shipped</p>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- ==================== SECTION#SHOWCASE — SHOWCASE ==================== -->
+      <section id="showcase" class="dk-section-showcase-showcase-t0zfhu" data-frame-name="section#showcase — Showcase">
+        <div class="dk-div-section-bg-2jbxyh"></div>
+        <!-- Auto-Layout: div.container -->
+        <div class="dk-div-container-celhuq" data-frame-name="div.container">
+          <!-- Auto-Layout: div.row -->
+          <div class="dk-div-row-ga8sjm" data-frame-name="div.row">
+            <!-- Auto-Layout: div.col -->
+            <div class="dk-div-col-1gz5uip" data-frame-name="div.col">
+              <img class="dk-img-feature-showcase-pex-1x19scu" src="https://images.pexels.com/photos/4492135/pexels-photo-4492135.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=2&amp;h=650&amp;w=940" alt="img (Feature Showcase / Pex)" loading="lazy" style="object-fit: cover; display: block;" />
+              <button type="button" class="dk-interactive-btn dk-button-pexels-hd-feature-1yza5pm" data-dk-action="▶ Pexels HD Feature" data-dk-target="#button-pexels-hd-feature" style="display: inline-flex; align-items: center; justify-content: center; font-weight: 600; font-size: 12px; color: #2563EB; border: 1.5px solid #E2E8F0;"><span>▶ Pexels HD Feature</span></button>
+            </div>
+            <!-- Auto-Layout: div.col -->
+            <div class="dk-div-col-3ule8y" data-frame-name="div.col">
+              <span class="dk-span-badge-inside-the-studio-v1a7fa">INSIDE THE STUDIO</span>
+              <h1 class="dk-h1-built-in-lisbon-krak-w-vb9t49">Built in Lisbon, Kraków, and a thousand coffee shops.</h1>
+              <p class="dk-p-four-day-august-no-gu-uhb01c">✓   Four-day August, no guilt</p>
+              <p class="dk-p-everyone-ships-everyo-uralqb">✓   Everyone ships, everyone supports</p>
+              <p class="dk-p-no-open-plan-theatre-w58m76">✓   No open-plan theatre</p>
+              <button type="button" class="dk-interactive-btn dk-button-meet-the-38-85pfh" data-dk-action="Meet the 38" data-dk-target="#button-meet-the-38" style="display: inline-flex; align-items: center; justify-content: center; font-weight: 600; font-size: 14px; color: #FFFFFF; border: 1.5px solid #1E293B;"><span>Meet the 38</span></button>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- ==================== SECTION#CTA — CALL TO ACTION ==================== -->
+      <section id="cta" class="dk-section-cta-call-to-action-rn1f0z" data-frame-name="section#cta — Call to Action">
+        <div class="dk-div-section-bg-2tbjng"></div>
+        <!-- Auto-Layout: div.container -->
+        <div class="dk-div-container-yzq7kb" data-frame-name="div.container">
+          <!-- Auto-Layout: div.row -->
+          <div class="dk-div-row-1t3rvou" data-frame-name="div.row">
+            <h1 class="dk-h1-come-build-something-peo-wf87w5">Come build something people actually love.</h1>
+            <button type="button" class="dk-interactive-btn dk-button-see-open-roles-1yfe3tn" data-dk-action="See open roles" data-dk-target="#button-see-open-roles" style="display: inline-flex; align-items: center; justify-content: center; font-weight: 600; font-size: 15px; color: #FFFFFF; border: 1.5px solid #1E293B;"><span>See open roles</span></button>
+          </div>
+          <p class="dk-p-we-re-hiring-designers-vl9et8">We're hiring designers, iOS engineers, and one very specific support lead in Kraków. Remote-first, salary bands published, interviews in two rounds.</p>
+        </div>
+      </section>
+      <!-- ==================== FOOTER — SITE FOOTER ==================== -->
+      <footer class="dk-footer-site-footer-9lq744" data-frame-name="footer — Site Footer">
+        <div class="dk-div-section-bg-33b5cf"></div>
+        <!-- Auto-Layout: div.container -->
+        <div class="dk-div-container-1e19bes" data-frame-name="div.container">
+          <!-- Auto-Layout: div.row -->
+          <div class="dk-div-row-1uzitkv" data-frame-name="div.row">
+            <p class="dk-p-overview-features-pricin-vv90i7">Overview     Features     Pricing     Resources     Privacy     Terms     |     𝕏  ·  in  ·  ig</p>
+            <h3 class="dk-h3-personal-x970z2">PERSONAL</h3>
+            <p class="dk-p-2026-personal-crafted-xj6mo1">© 2026 Personal. Crafted with DesignKoro AI.</p>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </main>
+  <script>
+    (function () {
+      // 1. Mobile Navigation Drawer Toggle
+      document.querySelectorAll('.dk-mobile-menu-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var nav = btn.closest('[data-dk-navbar="true"]');
+          if (!nav) return;
+          var isOpen = nav.classList.toggle('dk-mobile-nav-open');
+          btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        });
+      });
+
+      // 2. Sticky Navbar Scroll State
+      function updateStickyNavbars() {
+        var scrolled = (window.scrollY || window.pageYOffset || 0) > 10;
+        document.querySelectorAll('.dk-sticky-navbar, [data-dk-navbar="true"]').forEach(function (nav) {
+          if (scrolled) nav.classList.add('dk-navbar-scrolled');
+          else nav.classList.remove('dk-navbar-scrolled');
+        });
+      }
+      updateStickyNavbars();
+      window.addEventListener('scroll', updateStickyNavbars, { passive: true });
+
+      // 3. Staggered Entrance Micro-Animations
+      var animTargets = document.querySelectorAll('.dk-root-frame > *');
+      animTargets.forEach(function (el, idx) {
+        if (el.classList.contains('dk-sticky-navbar')) return;
+        el.style.setProperty('--dk-delay', Math.min(idx * 35, 420) + 'ms');
+        el.classList.add('dk-animate-in');
+      });
+
+      // 4. Toast Notification Helper
+      var toastTimer = null;
+      function showToast(message) {
+        var toast = document.querySelector('.dk-toast-notification');
+        if (!toast) {
+          toast = document.createElement('div');
+          toast.className = 'dk-toast-notification';
+          document.body.appendChild(toast);
+        }
+        toast.textContent = message;
+        toast.classList.add('dk-toast-visible');
+        if (toastTimer) clearTimeout(toastTimer);
+        toastTimer = setTimeout(function () {
+          toast.classList.remove('dk-toast-visible');
+        }, 2600);
+      }
+
+      // 5. Interactive Buttons (Ripple + Form Input Capture + Smooth Target Scroll)
+      document.addEventListener('click', function (e) {
+        var btn = e.target && e.target.closest ? e.target.closest('.dk-interactive-btn, button') : null;
+        if (btn) {
+          var rect = btn.getBoundingClientRect();
+          var ripple = document.createElement('span');
+          ripple.className = 'dk-ripple-wave';
+          ripple.style.left = (e.clientX - rect.left) + 'px';
+          ripple.style.top = (e.clientY - rect.top) + 'px';
+          btn.appendChild(ripple);
+          setTimeout(function () { ripple.remove(); }, 600);
+
+          var label = (btn.getAttribute('data-dk-action') || btn.textContent || 'Action').trim();
+          var targetSelector = btn.getAttribute('data-dk-target') || '';
+
+          // Check if there is a filled input nearby
+          var scope = btn.closest('.dk-root-frame') || document;
+          var inputs = scope.querySelectorAll('input.dk-interactive-input, textarea.dk-interactive-input');
+          var filledValues = [];
+          inputs.forEach(function (inp) {
+            if (inp.value && inp.value.trim()) {
+              filledValues.push(inp.value.trim());
+            }
+          });
+
+          if (filledValues.length > 0 && /submit|send|subscribe|join|start|search|login|sign|book|continue|apply/i.test(label)) {
+            showToast('✓ ' + label + ': ' + filledValues.join(', '));
+            return;
+          }
+
+          if (targetSelector && targetSelector.startsWith('#') && targetSelector.length > 1) {
+            var targetEl = document.querySelector(targetSelector);
+            if (targetEl) {
+              targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              return;
+            }
+          }
+          showToast('✓ ' + label);
+        }
+
+        var link = e.target && e.target.closest ? e.target.closest('a.dk-interactive-link') : null;
+        if (link) {
+          var href = link.getAttribute('href') || '';
+          if (href.startsWith('#')) {
+            e.preventDefault();
+            if (href === '#top' || href === '#') {
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+              var section = document.querySelector(href);
+              if (section) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              else showToast('Navigating to ' + (link.textContent || href).trim());
+            }
+          }
+        }
+      });
+
+      // 6. Interactive Inputs (Enter Key Submission)
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' && e.target && e.target.matches && e.target.matches('input.dk-interactive-input')) {
+          var val = (e.target.value || '').trim();
+          if (val) {
+            showToast('✓ Submitted: ' + val);
+          } else {
+            e.target.focus();
+          }
+        }
+      });
+    })();
+  </script>
+</div>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+</html>
