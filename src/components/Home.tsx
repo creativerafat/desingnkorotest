@@ -336,7 +336,6 @@ html, body {
   height: 100%;
   z-index: 0;
   pointer-events: none;
-  border-radius: 999px;
   border: 1px solid #2E3440;
 }
 
@@ -895,7 +894,7 @@ html, body {
   width: auto;
   max-width: 400px;
   height: auto;
-  color: #FFFFFF;
+  color: #0F172A;
   font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 12px;
   font-weight: 800;
@@ -912,7 +911,7 @@ html, body {
   width: auto;
   max-width: 780px;
   height: auto;
-  color: #FAFAFA;
+  color: #0F172A;
   font-family: 'Bricolage Grotesque', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: clamp(22px, 2.64vw, 38px);
   font-weight: 800;
@@ -1879,7 +1878,7 @@ export function Home(): React.ReactElement {
           >
             <div
               className="dk-div-section-bg-1npa6lw"
-              style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', zIndex: 0, pointerEvents: 'none', backgroundColor: 'transparent', borderRadius: '999px', border: '1px solid #2E3440' }}
+              style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', zIndex: 0, pointerEvents: 'none', backgroundColor: 'transparent', borderRadius: '0px', border: '1px solid #2E3440' }}
             >
 </div>
             {/* Auto-Layout: nav.container */}
@@ -2137,13 +2136,13 @@ export function Home(): React.ReactElement {
               </div>
               <span
                 className="dk-span-badge-engineered-for-flow-1k2iz16"
-                style={{ position: 'relative', zIndex: 1, maxWidth: '100%', color: '#FFFFFF', fontSize: 12, fontWeight: '800', fontFamily: "'Plus Jakarta Sans', 'Hind Siliguri', sans-serif", textAlign: 'left', margin: 0, whiteSpace: 'pre-wrap' }}
+                style={{ position: 'relative', zIndex: 1, maxWidth: '100%', color: '#0F172A', fontSize: 12, fontWeight: '800', fontFamily: "'Plus Jakarta Sans', 'Hind Siliguri', sans-serif", textAlign: 'left', margin: 0, whiteSpace: 'pre-wrap' }}
               >
                 ENGINEERED FOR FLOW
               </span>
               <h1
                 className="dk-h1-the-shibuya-system-3ayhqd"
-                style={{ position: 'relative', zIndex: 1, maxWidth: '100%', color: '#FAFAFA', fontSize: 38, fontWeight: '800', fontFamily: "'Bricolage Grotesque', 'Hind Siliguri', sans-serif", textAlign: 'left', margin: 0, whiteSpace: 'pre-wrap' }}
+                style={{ position: 'relative', zIndex: 1, maxWidth: '100%', color: '#0F172A', fontSize: 38, fontWeight: '800', fontFamily: "'Bricolage Grotesque', 'Hind Siliguri', sans-serif", textAlign: 'left', margin: 0, whiteSpace: 'pre-wrap' }}
               >
                 THE SHIBUYA SYSTEM
               </h1>
