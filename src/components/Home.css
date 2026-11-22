@@ -1,0 +1,1758 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bricolage%20Grotesque:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus%20Jakarta%20Sans:wght@300;400;500;600;700;800;900&display=swap');
+
+:root {
+  --dk-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --dk-ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --dk-focus-ring: 0 0 0 3px rgba(13, 153, 255, 0.28);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background-color: #FFFFFF;
+  font-family: 'Inter', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.dk-canvas-viewport {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  max-width: 100%;
+  min-height: 100vh;
+  overflow-x: clip;
+  background-color: #FFFFFF;
+}
+
+.dk-root-frame {
+  width: 100%;
+  max-width: 100%;
+}
+
+.dk-mobile-menu-btn {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  border: 1px solid rgba(15, 23, 42, 0.14);
+  background: rgba(255, 255, 255, 0.92);
+  color: #0F172A;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/* Sticky Navbar & Scrolled Elevation */
+.dk-sticky-navbar {
+  position: sticky !important;
+  top: 0 !important;
+  width: 100% !important;
+  z-index: 1000 !important;
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  transition: background-color 0.28s var(--dk-ease-out), box-shadow 0.28s var(--dk-ease-out), border-color 0.28s var(--dk-ease-out);
+}
+
+.dk-sticky-navbar.dk-navbar-scrolled {
+  box-shadow: 0 10px 30px -10px rgba(15, 23, 42, 0.14), 0 1px 0 0 rgba(15, 23, 42, 0.06) !important;
+}
+
+.dk-synthesized-navbar {
+  position: sticky !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  z-index: 1000 !important;
+}
+
+/* Micro-Animations & Entrance Keyframes */
+@keyframes dkFadeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes dkRippleExpand {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0.45;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(3.8);
+    opacity: 0;
+  }
+}
+
+.dk-animate-in {
+  animation: dkFadeUp 0.55s var(--dk-ease-out) both;
+  animation-delay: var(--dk-delay, 0ms);
+}
+
+/* Interactive Buttons */
+.dk-interactive-btn {
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer !important;
+  user-select: none;
+  text-decoration: none;
+  outline: none;
+  overflow: hidden;
+  transition:
+    transform 0.22s var(--dk-ease-out),
+    box-shadow 0.22s var(--dk-ease-out),
+    filter 0.22s var(--dk-ease-out),
+    background-color 0.22s var(--dk-ease-out),
+    border-color 0.22s var(--dk-ease-out);
+}
+
+.dk-interactive-btn > * {
+  pointer-events: none;
+}
+
+.dk-interactive-btn:hover {
+  transform: translateY(-2px) scale(1.018);
+  filter: brightness(1.05);
+  box-shadow: 0 10px 24px -6px rgba(15, 23, 42, 0.22), 0 4px 10px -2px rgba(13, 153, 255, 0.16);
+}
+
+.dk-interactive-btn:active {
+  transform: translateY(0px) scale(0.975);
+  filter: brightness(0.97);
+}
+
+.dk-interactive-btn:focus-visible {
+  box-shadow: var(--dk-focus-ring);
+}
+
+.dk-ripple-wave {
+  position: absolute;
+  border-radius: 50%;
+  width: 64px;
+  height: 64px;
+  background: rgba(255, 255, 255, 0.55);
+  pointer-events: none;
+  animation: dkRippleExpand 0.55s var(--dk-ease-out) forwards;
+}
+
+/* Interactive Inputs, Textareas & Selects */
+.dk-interactive-input {
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: text !important;
+  outline: none;
+  transition:
+    border-color 0.2s var(--dk-ease-out),
+    box-shadow 0.2s var(--dk-ease-out),
+    background-color 0.2s var(--dk-ease-out),
+    transform 0.2s var(--dk-ease-out);
+}
+
+.dk-interactive-input::placeholder {
+  color: #6B7280;
+  opacity: 0.85;
+}
+
+.dk-interactive-input:hover {
+  border-color: rgba(13, 153, 255, 0.55) !important;
+}
+
+.dk-interactive-input:focus {
+  border-color: #0D99FF !important;
+  box-shadow: var(--dk-focus-ring) !important;
+}
+
+.dk-input-wrapper {
+  display: flex;
+  align-items: center;
+  cursor: text;
+  transition: border-color 0.2s var(--dk-ease-out), box-shadow 0.2s var(--dk-ease-out);
+}
+
+.dk-input-wrapper:focus-within {
+  border-color: #0D99FF !important;
+  box-shadow: var(--dk-focus-ring) !important;
+}
+
+.dk-input-wrapper input {
+  width: 100%;
+  height: 100%;
+  border: none !important;
+  background: transparent !important;
+  outline: none !important;
+  color: inherit;
+  font: inherit;
+  padding: 0 14px;
+}
+
+/* Interactive Links */
+.dk-interactive-link {
+  cursor: pointer !important;
+  text-decoration: none;
+  transition: color 0.2s var(--dk-ease-out), opacity 0.2s var(--dk-ease-out), transform 0.2s var(--dk-ease-out);
+}
+
+.dk-interactive-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 1.5px;
+  background-color: currentColor;
+  transform: scaleX(0);
+  transform-origin: right center;
+  transition: transform 0.24s var(--dk-ease-out);
+  opacity: 0.75;
+}
+
+.dk-interactive-link:hover {
+  opacity: 0.88;
+  transform: translateY(-1px);
+}
+
+.dk-interactive-link:hover::after {
+  transform: scaleX(1);
+  transform-origin: left center;
+}
+
+/* Interactive Feature / Pricing / Content Cards */
+.dk-interactive-card {
+  transition:
+    transform 0.28s var(--dk-ease-out),
+    box-shadow 0.28s var(--dk-ease-out),
+    border-color 0.28s var(--dk-ease-out);
+}
+
+.dk-interactive-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 38px -12px rgba(15, 23, 42, 0.14), 0 4px 12px -2px rgba(15, 23, 42, 0.06);
+}
+
+/* Interactive Toast Feedback */
+.dk-toast-notification {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 18px;
+  border-radius: 12px;
+  background: rgba(15, 23, 42, 0.94);
+  color: #FFFFFF;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.28), 0 0 0 1px rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(12px);
+  transform: translateY(16px);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.26s var(--dk-ease-out), opacity 0.26s var(--dk-ease-out);
+}
+
+.dk-toast-notification.dk-toast-visible {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* ========================================================================== */
+/* ROOT ARTBOARD: Home (1440x2820px) */
+/* ========================================================================== */
+
+.dk-home-5bv7m6 {
+  --dk-design-width: 1440;
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0px;
+  overflow-x: clip;
+  background-color: #FFFFFF;
+}
+
+
+/* ==================== SECTION: header — Navbar ==================== */
+
+.dk-header-navbar-gz3ted {
+  position: sticky !important;
+  top: 0 !important;
+  left: 0;
+  width: 100%;
+  min-height: 72px;
+  z-index: 1000 !important;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 0px clamp(16px, 4vw, 24px);
+  background-color: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+}
+
+.dk-div-section-bg-1npa6lw {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 999px;
+  border: 1px solid #2E3440;
+}
+
+.dk-nav-container-8blrqo {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1140px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-inline: clamp(16px, 4vw, 40px);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 16px clamp(16px, 4vw, 16px) 16px clamp(16px, 4vw, 16px);
+}
+
+.dk-div-row-1ylepjc {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1140px;
+  height: auto;
+}
+
+.dk-a-brand-aerasolo-1urvz09 {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 320px;
+  height: auto;
+  color: #FFFFFF;
+  font-family: 'Bricolage Grotesque', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-a-nav-link-features-1uwb669 {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 320px;
+  height: auto;
+  color: #FAFAFA;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-a-nav-link-hardware-1o7xfdp {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 320px;
+  height: auto;
+  color: #FAFAFA;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-a-nav-link-journal-1imhwuc {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 320px;
+  height: auto;
+  color: #FAFAFA;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-a-nav-link-login-1g8dcak {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 320px;
+  height: auto;
+  color: #FAFAFA;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-button-join-the-grid-azlkca {
+  position: relative;
+  z-index: 1;
+  width: fit-content;
+  min-width: 160px;
+  max-width: 100%;
+  min-height: 48px;
+  background-color: #FB3768;
+  border-radius: 999px;
+  border: 1.5px solid #1E293B;
+}
+
+
+/* ==================== SECTION: section#hero — Hero ==================== */
+
+.dk-section-hero-hero-yy4xal {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.dk-div-section-bg-1h2ipam {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 36px;
+  border: 1px solid #2E3440;
+}
+
+.dk-div-container-1d6nwic {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1196px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-inline: clamp(16px, 4vw, 40px);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 24px clamp(16px, 4vw, 24px) 24px clamp(16px, 4vw, 24px);
+}
+
+.dk-div-row-1jtw8g8 {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1196px;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.dk-div-col-14aosbo {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 580px;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.dk-img-hero-studio-spotligh-109sx6o {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 580px;
+  aspect-ratio: 580 / 340;
+  height: auto;
+  background-image: url("https://images.pexels.com/photos/36566629/pexels-photo-36566629.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 24px;
+  border: 1px solid transparent;
+}
+
+.dk-img-hero-studio-video-re-37vv7z {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 280px;
+  aspect-ratio: 280 / 188;
+  height: auto;
+  background-image: url("https://images.pexels.com/videos/38781554/pexels-photo-38781554.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=630&w=1200");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 20px;
+  border: 1px solid transparent;
+}
+
+.dk-article-card-1gztmv4 {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 280px;
+  height: auto;
+}
+
+.dk-div-card-surface-fjutyo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 20px;
+  border: 1px solid #2E3440;
+}
+
+.dk-span-badge-syne-sync-89x7os {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 320px;
+  height: auto;
+  color: #FFFFFF;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-h2-active-now-17ekz9 {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 320px;
+  height: auto;
+  color: #FFFFFF;
+  font-family: 'Bricolage Grotesque', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-div-col-tv0bs6 {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 580px;
+  height: auto;
+}
+
+.dk-button-social-evolution-2026-1kgw3zl {
+  position: relative;
+  z-index: 1;
+  width: fit-content;
+  min-width: 160px;
+  max-width: 100%;
+  min-height: 42px;
+  background-color: #2E1621;
+  border-radius: 999px;
+  border: 1.5px solid #1E293B;
+}
+
+.dk-h1-reclaim-your-digital-soc-11gmd0l {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 580px;
+  height: auto;
+  color: #FAFAFA;
+  font-family: 'Bricolage Grotesque', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: clamp(29px, 3.47vw, 50px);
+  font-weight: 800;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-h3-break-the-scroll-with-a-5c4oz {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 580px;
+  height: auto;
+  color: #E2E8F0;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-button-join-the-grid-1so7qv2 {
+  position: relative;
+  z-index: 1;
+  width: fit-content;
+  min-width: 160px;
+  max-width: 100%;
+  min-height: 54px;
+  background-color: #FB3768;
+  border-radius: 14px;
+  border: 1.5px solid #1E293B;
+}
+
+.dk-button-view-manifest-yep9hi {
+  position: relative;
+  z-index: 1;
+  width: fit-content;
+  min-width: 160px;
+  max-width: 100%;
+  min-height: 54px;
+  background-color: #0E0E12;
+  border-radius: 14px;
+  border: 1.5px solid #2E3440;
+}
+
+
+/* ==================== SECTION: section#features — Features ==================== */
+
+.dk-section-features-features-12hr28h {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.dk-div-container-nc9urc {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 24px clamp(16px, 4vw, 24px) 24px clamp(16px, 4vw, 24px);
+}
+
+.dk-div-grid-1t9u2iq {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.dk-article-card-j46t78 {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 410px;
+  height: auto;
+}
+
+.dk-div-card-surface-2u5et7 {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 22px;
+  border: 1px solid #E2E8F0;
+}
+
+.dk-h1-1-2m-1h3jyc3 {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 362px;
+  height: auto;
+  color: #FB3768;
+  font-family: 'Bricolage Grotesque', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: clamp(22px, 2.22vw, 32px);
+  font-weight: 800;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-p-night-walkers-1hcelu6 {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 362px;
+  height: auto;
+  color: #475569;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-article-card-1jtnzgy {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 410px;
+  height: auto;
+}
+
+.dk-div-card-surface-1pw2rbo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 22px;
+  border: 1px solid #E2E8F0;
+}
+
+.dk-h1-20ms-1euoyhm {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 362px;
+  height: auto;
+  color: #FB3768;
+  font-family: 'Bricolage Grotesque', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: clamp(22px, 2.22vw, 32px);
+  font-weight: 800;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-p-latent-sync-1h0k6e6 {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 362px;
+  height: auto;
+  color: #475569;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-article-card-1kaerzn {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 410px;
+  height: auto;
+}
+
+.dk-div-card-surface-ghy2r1 {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 22px;
+  border: 1px solid #FB3768;
+}
+
+.dk-h1-4k-197yfnp {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 362px;
+  height: auto;
+  color: #FFFFFF;
+  font-family: 'Bricolage Grotesque', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: clamp(22px, 2.22vw, 32px);
+  font-weight: 800;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-p-social-fidelity-1jiwdai {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 362px;
+  height: auto;
+  color: #FFFFFF;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-span-badge-engineered-for-flow-1k2iz16 {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 400px;
+  height: auto;
+  color: #FFFFFF;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-h1-the-shibuya-system-3ayhqd {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 780px;
+  height: auto;
+  color: #FAFAFA;
+  font-family: 'Bricolage Grotesque', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: clamp(22px, 2.64vw, 38px);
+  font-weight: 800;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-div-grid-1pztmot {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.dk-article-card-l0jtyw {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 730px;
+  height: auto;
+}
+
+.dk-div-section-bg-66oocj {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 28px;
+  border: 1px solid #1E293B;
+}
+
+.dk-img-bento-1-flagship-pho-vk1o4d {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 690px;
+  aspect-ratio: 690 / 330;
+  height: auto;
+  background-image: url("https://images.pexels.com/photos/19969441/pexels-photo-19969441.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 20px;
+  border: 1px solid transparent;
+}
+
+.dk-span-badge-vision-g6ssv5 {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 320px;
+  height: auto;
+  color: #FFFFFF;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-h3-0ms-lag-fowhg4 {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 320px;
+  height: auto;
+  color: #FAFAFA;
+  font-family: 'Bricolage Grotesque', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1.45;
+  text-align: right;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-h2-prism-lens-255n5n {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 470px;
+  height: auto;
+  color: #FAFAFA;
+  font-family: 'Bricolage Grotesque', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-p-real-time-color-grading-mhy3o1 {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 470px;
+  height: auto;
+  color: #E2E8F0;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-button-view-samples-1xbb3ce {
+  position: relative;
+  z-index: 1;
+  width: fit-content;
+  min-width: 160px;
+  max-width: 100%;
+  min-height: 50px;
+  background-color: #FB3768;
+  border-radius: 14px;
+  border: 1.5px solid #1E293B;
+}
+
+.dk-article-card-18hnnxx {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 522px;
+  height: auto;
+}
+
+.dk-div-card-surface-1wmqblc {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 24px;
+  border: 1px solid #E2E8F0;
+}
+
+.dk-img-bento-2-photo-f3ht1l {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 190px;
+  aspect-ratio: 190 / 232;
+  height: auto;
+  background-image: url("https://images.pexels.com/photos/10289009/pexels-photo-10289009.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 18px;
+  border: 1px solid transparent;
+}
+
+.dk-span-badge-speed-1fkjr03 {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 320px;
+  height: auto;
+  color: #FB3768;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-h3-kinetic-feed-kq66j1 {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 320px;
+  height: auto;
+  color: #0F172A;
+  font-family: 'Bricolage Grotesque', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-p-a-fluid-gravity-based-b-s75tlj {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 320px;
+  height: auto;
+  color: #A1A1AA;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-button-demo-motion-i2q9c {
+  position: relative;
+  z-index: 1;
+  width: fit-content;
+  min-width: 160px;
+  max-width: 100%;
+  min-height: 42px;
+  background-color: #FB3768;
+  border-radius: 12px;
+  border: 1.5px solid #1E293B;
+}
+
+.dk-article-card-adod7t {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 522px;
+  height: auto;
+}
+
+.dk-div-card-surface-yb70ix {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 24px;
+  border: 1px solid #E2E8F0;
+}
+
+.dk-img-bento-3-photo-73qf4i {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 190px;
+  aspect-ratio: 190 / 232;
+  height: auto;
+  background-image: url("https://images.pexels.com/photos/8111454/pexels-photo-8111454.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 18px;
+  border: 1px solid transparent;
+}
+
+.dk-span-badge-depth-15wqdwq {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 320px;
+  height: auto;
+  color: #FB3768;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-h3-spatial-dms-xz0am0 {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 320px;
+  height: auto;
+  color: #0F172A;
+  font-family: 'Bricolage Grotesque', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-p-connect-in-3d-soundscape-1a6r184 {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 320px;
+  height: auto;
+  color: #A1A1AA;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-button-open-audio-lgc99s {
+  position: relative;
+  z-index: 1;
+  width: fit-content;
+  min-width: 160px;
+  max-width: 100%;
+  min-height: 42px;
+  background-color: #FB3768;
+  border-radius: 12px;
+  border: 1.5px solid #1E293B;
+}
+
+
+/* ==================== SECTION: section#showcase — Showcase ==================== */
+
+.dk-section-showcase-showcase-1c3ylzh {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.dk-div-section-bg-16e6vik {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 32px;
+  border: 1px solid #2E3440;
+}
+
+.dk-div-container-1qqgm3w {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1204px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-inline: clamp(16px, 4vw, 40px);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 24px clamp(16px, 4vw, 24px) 24px clamp(16px, 4vw, 24px);
+}
+
+.dk-div-row-cpwn01 {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1204px;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.dk-div-col-1i2bln6 {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 560px;
+  height: auto;
+}
+
+.dk-img-feature-showcase-pex-w3wj03 {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 560px;
+  aspect-ratio: 560 / 428;
+  height: auto;
+  background-image: url("https://images.pexels.com/photos/16029615/pexels-photo-16029615.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 22px;
+  border: 1px solid transparent;
+}
+
+.dk-button-pexels-hd-feature-1452krt {
+  position: relative;
+  z-index: 1;
+  width: fit-content;
+  min-width: 160px;
+  max-width: 100%;
+  min-height: 42px;
+  background-color: #0E0E12;
+  border-radius: 999px;
+  border: 1.5px solid #2E3440;
+}
+
+.dk-div-col-12lsbfk {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 600px;
+  height: auto;
+}
+
+.dk-span-badge-visual-sovereignty-zytprk {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 600px;
+  height: auto;
+  color: #FFFFFF;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-h1-night-mode-by-default-1dajiol {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 600px;
+  height: auto;
+  color: #FAFAFA;
+  font-family: 'Bricolage Grotesque', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: clamp(22px, 2.50vw, 36px);
+  font-weight: 800;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-p-oled-optimization-1w6vbs1 {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 600px;
+  height: auto;
+  color: #E2E8F0;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-p-zero-blue-light-mode-bqnnx9 {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 600px;
+  height: auto;
+  color: #E2E8F0;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-p-retinal-sync-2-0-1o6lg6q {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 600px;
+  height: auto;
+  color: #E2E8F0;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-button-explore-interface-1pl8sbq {
+  position: relative;
+  z-index: 1;
+  width: fit-content;
+  min-width: 160px;
+  max-width: 100%;
+  min-height: 52px;
+  background-color: #FB3768;
+  border-radius: 12px;
+  border: 1.5px solid #1E293B;
+}
+
+
+/* ==================== SECTION: section#cta — Call to Action ==================== */
+
+.dk-section-cta-call-to-action-5cdqv7 {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.dk-div-section-bg-16aa18f {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 28px;
+  border: 1px solid #FB3768;
+}
+
+.dk-div-container-npeb2z {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1168px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-inline: clamp(16px, 4vw, 40px);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 24px clamp(16px, 4vw, 24px) 24px clamp(16px, 4vw, 24px);
+}
+
+.dk-div-row-3ten47 {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1168px;
+  height: auto;
+}
+
+.dk-h1-ready-for-the-night-1iyspzq {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 720px;
+  height: auto;
+  color: #FAFAFA;
+  font-family: 'Bricolage Grotesque', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: clamp(22px, 2.36vw, 34px);
+  font-weight: 800;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-button-secure-access-1u9zu9n {
+  position: relative;
+  z-index: 1;
+  width: fit-content;
+  min-width: 160px;
+  max-width: 100%;
+  min-height: 56px;
+  background-color: #FB3768;
+  border-radius: 14px;
+  border: 1.5px solid #1E293B;
+}
+
+.dk-p-secure-your-2026-alpha-i-os6gem {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 720px;
+  height: auto;
+  color: #E2E8F0;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+
+/* ==================== SECTION: footer — Site Footer ==================== */
+
+.dk-footer-site-footer-qv9dku {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.dk-div-section-bg-fa3kyy {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  border: 1px solid #E2E8F0;
+}
+
+.dk-div-container-1bpvp8n {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 24px clamp(16px, 4vw, 24px) 24px clamp(16px, 4vw, 24px);
+}
+
+.dk-div-row-11a8yje {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 100%;
+}
+
+.dk-h3-aerasolo-nfnch8 {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 360px;
+  height: auto;
+  color: #0F172A;
+  font-family: 'Bricolage Grotesque', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-a-footer-link-showroom-154n32c {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 320px;
+  height: auto;
+  color: #0F172A;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-p-break-the-scroll-with-a-37mnb8 {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 380px;
+  height: auto;
+  color: #475569;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-p-features-showcase-do-ihikpy {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 460px;
+  height: auto;
+  color: #475569;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-a-footer-link-company-1tc8o14 {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 320px;
+  height: auto;
+  color: #0F172A;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-p-about-careers-contac-19mtwe6 {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 460px;
+  height: auto;
+  color: #475569;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.dk-p-2026-aerasolo-all-rig-n2l5rm {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 100%;
+  color: #64748B;
+  font-family: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+/* Responsive Breakpoints (TAB <= 1024px & MOB <= 768px) */
+@media (max-width: 1024px) {
+  .dk-interactive-btn,
+  .dk-interactive-input {
+    min-height: 40px;
+  }
+  .dk-mobile-menu-btn {
+    display: inline-flex;
+    margin-left: auto;
+  }
+  [data-dk-navbar="true"] nav,
+  [data-dk-navbar="true"] .dk-interactive-link,
+  [data-dk-navbar="true"] .dk-interactive-btn:not(.dk-mobile-menu-btn),
+  [data-dk-navbar="true"] [data-auto-layout="horizontal"] > a.dk-interactive-link {
+    display: none !important;
+  }
+  [data-dk-navbar="true"].dk-mobile-nav-open nav,
+  [data-dk-navbar="true"].dk-mobile-nav-open [data-auto-layout="horizontal"] > a.dk-interactive-link {
+    display: flex !important;
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    padding-top: 10px;
+  }
+  [data-dk-navbar="true"] + section,
+  header + section,
+  nav + section {
+    margin-top: 40px !important;
+  }
+  section > div,
+  section > [data-auto-layout] {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  [data-auto-layout="horizontal"]:not([data-dk-navbar="true"]) {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+  [data-dk-navbar="true"] + section,
+  header + section,
+  nav + section {
+    margin-top: 40px !important;
+  }
+  section,
+  section > div,
+  section > [data-auto-layout] {
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .dk-toast-notification {
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+    justify-content: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
